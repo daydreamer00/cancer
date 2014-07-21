@@ -13,10 +13,10 @@ n_pos = sum(ori_data(4,:)==0)/2;
 % samp1 = randn(size(samp1));
 % samp2 = randn(size(samp1));
 
-k_neigh = 1
+k_neigh = 10
 proj_type = 2 % 1:fisher 2:pSVM 3:libSVM 4: tuned libSVM
 dist_type = 1
-mean_type = 1 % 1:normal 2:weighted
+mean_type = 2 % 1:normal 2:weighted
 
 % t = 180;
 % samp1(1,:) = samp1(t,:);
@@ -53,21 +53,22 @@ k = 1;
 % sorted_p_perm = [sorted_p sort_i];
 
 %permutation hotelling
-[perm_pvalues ] = hot_perm_samples( new_samp1,new_samp2,5000,1); 
-[sorted_p, sort_i] = sort(perm_pvalues);
-sorted_p_perm = [sorted_p sort_i];
+[ perm_hot_pvalues ] = hot_perm_samples( samp1,samp2,100,n_pos );
+% [perm_pvalues ] = hot_perm_samples( new_samp1,new_samp2,5000,1); 
+% [sorted_p, sort_i] = sort(perm_pvalues);
+% sorted_p_perm = [sorted_p sort_i];
 
 [ acc_train, acc_test ,train_eval, test_eval] = compute_acc_sep( samp1,samp2,k_neigh,proj_type,dist_type,mean_type,n_pos,500 );
 avg_acc = (acc_train+acc_test)/2;
 acc_sep = [acc_train acc_test avg_acc];
-[ acc_train, acc_test ] = compute_acc( new_samp1,new_samp2,5000 );
+[ acc_train, acc_test ] = compute_acc( new_samp1,new_samp2,500 );
 avg_acc = (acc_train+acc_test)/2;
 acc = [acc_train acc_test avg_acc];
 
 %hotelling
 [ hot_pvalues ] = hotelling_t2_test_batch( samp1,samp2,n_pos );
 
-res_table_perm = [[1:n1]' hot_perm_pvalues hot_pvalues ttest_pvalues acc_sep train_eval test_eval acc];
+res_table_perm = [[1:n1]' perm_hot_pvalues hot_pvalues ttest_pvalues acc_sep train_eval test_eval acc];
 
 % samp1_pos = samp1(:,1:n_pos);
 % samp1_neg = samp1(:,n_pos+1:end);

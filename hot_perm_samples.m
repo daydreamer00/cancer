@@ -17,7 +17,7 @@ function [ pvalues ] = hot_perm_samples( samp1,samp2,iter_n,n_pos )
     cnt = zeros(n1,1);
     
     for i = 1:iter_n
-%         fprintf('iter %d start\n',i);
+        fprintf('iter %d start\n',i);
         index = randperm(m1);
         pos_i = index<=n_pos;
         neg_i = index>n_pos;

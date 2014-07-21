@@ -10,7 +10,7 @@ function [w,model] = svmtrain_prj(labels,samp,svmoption)
             rand_i = randperm(n);
             rand_samp = samp(rand_i,:);
             n_fold = 5;
-            iter = 500;
+            iter = 100;
             cv = 0;
             
             for j = 1:iter
