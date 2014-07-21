@@ -13,10 +13,10 @@ n_pos = sum(ori_data(4,:)==0)/2;
 % samp1 = randn(size(samp1));
 % samp2 = randn(size(samp1));
 
-k_neigh = 10
-proj_type = 2 % 1:fisher 2:pSVM 3:libSVM 4: tuned libSVM
+k_neigh = 1
+proj_type = 1 % 1:fisher 2:pSVM 3:libSVM 4: tuned libSVM
 dist_type = 1
-mean_type = 2 % 1:normal 2:weighted
+mean_type = 1 % 1:normal 2:weighted
 
 % t = 180;
 % samp1(1,:) = samp1(t,:);
@@ -58,7 +58,7 @@ k = 1;
 % [sorted_p, sort_i] = sort(perm_pvalues);
 % sorted_p_perm = [sorted_p sort_i];
 
-[ acc_train, acc_test ,train_eval, test_eval] = compute_acc_sep( samp1,samp2,k_neigh,proj_type,dist_type,mean_type,n_pos,500 );
+[ acc_train, acc_test ,train_eval, test_eval] = compute_acc_sep( samp1,samp2,k_neigh,proj_type,dist_type,mean_type,n_pos,100 );
 avg_acc = (acc_train+acc_test)/2;
 acc_sep = [acc_train acc_test avg_acc];
 [ acc_train, acc_test ] = compute_acc( new_samp1,new_samp2,500 );
@@ -70,14 +70,18 @@ acc = [acc_train acc_test avg_acc];
 
 res_table_perm = [[1:n1]' perm_hot_pvalues hot_pvalues ttest_pvalues acc_sep train_eval test_eval acc];
 
-% samp1_pos = samp1(:,1:n_pos);
-% samp1_neg = samp1(:,n_pos+1:end);
-% samp2_pos = samp2(:,1:n_pos) - samp1_pos;
-% samp2_neg = samp2(:,n_pos+1:end)-samp1_neg;
-% 
+qvalues = plot_hot_ttest(res_table_perm(:,3:4),ones(n1,1)-res_table_perm(:,6));
+
+%3 comb hotelling
+samp1_pos = samp1(:,1:n_pos);
+samp1_neg = samp1(:,n_pos+1:end);
+samp2_pos = samp2(:,1:n_pos);% - samp1_pos;
+samp2_neg = samp2(:,n_pos+1:end);% -samp1_neg;
+
 % [ hot_pvalues,enum ] = hotelling_t2_test_perm_genes( samp2_pos,samp2_neg,3);
-% hot_pvalues = [enum hot_pvalues];
-% save('perm_hot_pvalue_cancerMinus.txt','hot_pvalues','-ascii');
+[ hot_pvalues,enum ] = hotelling_t2_test_perm_genes( new_samp_pos,new_samp_neg,3);
+hot_pvalues = [enum hot_pvalues];
+save('perm_hot_pvalue_fisher.txt','hot_pvalues','-ascii');
 
 
 % 

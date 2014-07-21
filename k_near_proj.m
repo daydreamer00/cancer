@@ -98,8 +98,8 @@ function [ new_samp_pos, new_samp_neg ,w ,thres] = k_near_proj( samp1,samp2,k_ne
 %             scatter(neighbor_samp_pos(1:n_pos,1),neighbor_samp_pos(1:n_pos,2),'+','r');  
             hold on;
 %             scatter(neighbor_samp_neg(1:n_neg,1),neighbor_samp_neg(1:n_neg,2),'o','r');
-            scatter(self_samp_pos(:,1),self_samp_pos(:,2),'+','g');
-            scatter(self_samp_neg(:,1),self_samp_neg(:,2),'o','g');
+            scatter(self_samp_pos(:,1),self_samp_pos(:,2),'+','b');
+            scatter(self_samp_neg(:,1),self_samp_neg(:,2),'o','b');
             min_x = min([self_samp_pos(1:n_pos,1); self_samp_neg(1:n_neg,1)]);
             max_x = max([self_samp_pos(1:n_pos,1); self_samp_neg(1:n_neg,1)]);
             centerx = (mean(neighbor_samp_pos)+mean(neighbor_samp_neg))'/2;

@@ -22,5 +22,6 @@ t2_statistic = (M1-M2)'*pinv(SS)*(M1-M2)*n1_rev*n2_rev/(n1_rev+n2_rev);
 t2_statistic = (n1_rev+n2_rev-m-1)/(m*(n1_rev+n2_rev-2))*t2_statistic;
 df1 = m;
 df2 = n1_rev+n2_rev-m-1;
-p_value = 1-cdf('f',t2_statistic,df1,df2);   % p-value
+% p_value = 1-cdf('f',t2_statistic,df1,df2);   % p-value
+p_value = cdf('f',1/t2_statistic,df2,df1);
 end

@@ -15,6 +15,9 @@ function [ pvalues,enum ] = hotelling_t2_test_perm_genes( samp_pos,samp_neg,k)
     pvalues = zeros(new_n,1);
     
     for i = 1:new_n
+        if (~mod(i,10000))
+            fprintf('iter %d\n',i);
+        end
         pos_samp = [samp_pos(enum(i,:),:)];
         neg_samp = [samp_neg(enum(i,:),:)];
 %         neg_samp = [samp1(i,npos+1:end); samp2(i,npos+1:end)];
