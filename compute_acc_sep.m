@@ -42,19 +42,19 @@ function [ acc_train, acc_test,train_eval, test_eval ] = compute_acc_sep( samp1,
         test_i_neg = index_samp_neg(n_train_samp_neg+1:end);
         
         samp1_pos_train = samp1(:,train_i_pos);
-        samp1_neg_train = samp1(:,train_i_neg);
+        samp1_neg_train = samp1(:,n_pos+train_i_neg);
         samp1_train = [samp1_pos_train samp1_neg_train];
         
         samp2_pos_train = samp2(:,train_i_pos);
-        samp2_neg_train = samp2(:,train_i_neg);
+        samp2_neg_train = samp2(:,n_pos+train_i_neg);
         samp2_train = [samp2_pos_train samp2_neg_train];
         
         samp1_pos_test = samp1(:,test_i_pos);
-        samp1_neg_test = samp1(:,test_i_neg);
+        samp1_neg_test = samp1(:,n_pos+test_i_neg);
         samp1_test = [samp1_pos_test samp1_neg_test];
         
         samp2_pos_test = samp2(:,test_i_pos);
-        samp2_neg_test = samp2(:,test_i_neg);
+        samp2_neg_test = samp2(:,n_pos+test_i_neg);
         samp2_test = [samp2_pos_test samp2_neg_test];
         
         [ new_samp_pos_train, new_samp_neg_train ,w,thres] = k_near_proj( samp1_train,samp2_train,k_neigh,projtype,disttype,meantype,n_train_samp_pos,0,[]);
@@ -77,7 +77,7 @@ function [ acc_train, acc_test,train_eval, test_eval ] = compute_acc_sep( samp1,
         mean_samp2_test = (mean_samp2_pos_test+mean_samp2_neg_test)/2;
 
         for j = 1:n1
-            thres(j,:) = -w(j,:)*[mean_samp1_test(j); mean_samp2_test(j);];
+%             thres(j,:) = -w(j,:)*[mean_samp1_test(j); mean_samp2_test(j);];
             new_samp_pos_test(j,:) = w(j,:)*[samp1_pos_test(j,:); samp2_pos_test(j,:)]+repmat(thres(j,:),1,n_test_samp_pos);
             new_samp_neg_test(j,:) = w(j,:)*[samp1_neg_test(j,:); samp2_neg_test(j,:)]+repmat(thres(j,:),1,n_test_samp_neg);
         end

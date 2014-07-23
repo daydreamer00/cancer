@@ -11,10 +11,11 @@ n_pos = sum(ori_data(4,:)==0)/2;
 
 % % generate random data
 % samp1 = randn(size(samp1));
+% samp1(1:10,1:n_pos) = samp1(1:10,1:n_pos)+3;
 % samp2 = randn(size(samp1));
 
 k_neigh = 1
-proj_type = 3 % 1:fisher 2:pSVM 3:libSVM 4: tuned libSVM
+proj_type = 1 % 1:fisher 2:pSVM 3:libSVM 4: tuned libSVM
 dist_type = 1
 mean_type = 1 % 1:normal 2:weighted
 
@@ -24,7 +25,7 @@ mean_type = 1 % 1:normal 2:weighted
 % figure(3);
 
 % first projection
-[ new_samp_pos, new_samp_neg ] = k_near_proj( samp1,samp2,k_neigh,proj_type,dist_type,mean_type,n_pos,1,[]);
+[ new_samp_pos, new_samp_neg ] = k_near_proj( samp1,samp2,k_neigh,proj_type,dist_type,mean_type,n_pos,1,[59]);
 new_samp = [new_samp_pos new_samp_neg];
 if(proj_type ==1 )
     save(sprintf('%d nn fisher.txt',k_neigh),'new_samp','-ascii');
@@ -78,7 +79,7 @@ acc = [acc_train acc_test avg_acc];
 %hotelling
 [ hot_pvalues ] = hotelling_t2_test_batch( samp1,samp2,n_pos );
 
-qvalues = plot_hot_ttest([hot_pvalues ttest_pvalues],ones(n1,1)-res_table_perm(:,6));
+qvalues = plot_hot_ttest([hot_pvalues ttest_pvalues],ones(n1,1)-acc_sep(:,2));
 
 res_table_perm = [[1:n1]' hot_pvalues ttest_pvalues qvalues acc_sep train_eval test_eval acc];
 

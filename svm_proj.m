@@ -57,8 +57,8 @@ function [ w , b] = svm_proj( samp1,samp2,svm_type )
             [ samp ,mean_a, std_a] = standardize( samp );
             svmoption = sprintf('-s 0 -t 0 -w1 %f -q',n2/n1);
 %             svmoption = sprintf('-s 0 -t 0 -w1 %f -q',1);
-            w = svmtrain_prj(labels,samp,svmoption);
-%             b = (-model.rho-w'*(mean_a./std_a)');
+            [w,model] = svmtrain_prj(labels,samp,svmoption);
+            b = (-model.rho-w'*(mean_a./std_a)');
             w = w./std_a';
         otherwise
             error('wrong svm type');

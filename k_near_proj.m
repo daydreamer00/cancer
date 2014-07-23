@@ -72,12 +72,14 @@ function [ new_samp_pos, new_samp_neg ,w ,thres] = k_near_proj( samp1,samp2,k_ne
             [wtmp, b] = svm_proj(neighbor_samp_pos,neighbor_samp_neg,2);
             w(i,:) = wtmp';
         elseif(projtype == 4)
-            w(i,:) = svm_proj(neighbor_samp_pos,neighbor_samp_neg,3)';
+            [wtmp, b] = svm_proj(neighbor_samp_pos,neighbor_samp_neg,3);
+            w(i,:) = wtmp';
+%             [w(i,:)] = svm_proj(neighbor_samp_pos,neighbor_samp_neg,3)';
         else
             error('invalid projtype');
         end
         
-        if(projtype ==3 )
+        if(projtype >= 3 )
             thres(i) = b;
         else
             thres(i) = - w(i,:)*(mean(neighbor_samp_pos)+mean(neighbor_samp_neg))'/2;
@@ -94,7 +96,7 @@ function [ new_samp_pos, new_samp_neg ,w ,thres] = k_near_proj( samp1,samp2,k_ne
         if (ismember(i,plot_index))
             self_samp_pos = self_samp_pos';
             self_samp_neg = self_samp_neg';
-            figure(1);
+            figure(3);
 %             scatter(neighbor_samp_pos(1:n_pos,1),neighbor_samp_pos(1:n_pos,2),'+','r');  
             hold on;
 %             scatter(neighbor_samp_neg(1:n_neg,1),neighbor_samp_neg(1:n_neg,2),'o','r');
