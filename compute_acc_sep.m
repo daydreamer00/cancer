@@ -62,9 +62,20 @@ function [ acc_train, acc_test,train_eval, test_eval ] = compute_acc_sep( samp1,
         new_samp_pos_test = zeros(n1,n_test_samp_pos);
         new_samp_neg_test = zeros(n1,n_test_samp_neg);
         
-        mean_samp1_test = mean(samp1_test,2);
-        mean_samp2_test = mean(samp2_test,2);
+%         mean_samp1_test = mean(samp1_test,2);
+%         mean_samp2_test = mean(samp2_test,2);
         
+        mean_samp1_pos_test = mean(samp1_pos_test,2);
+        mean_samp1_neg_test = mean(samp1_neg_test,2);
+        mean_samp2_pos_test = mean(samp2_pos_test,2);
+        mean_samp2_neg_test = mean(samp2_neg_test,2);
+        
+%         mean_samp1_test = (mean_samp1_pos_test*n_test_samp_pos+mean_samp1_neg_test*n_test_samp_neg)/(n_test_samp_neg+n_test_samp_pos);
+%         mean_samp2_test = (mean_samp2_pos_test*n_test_samp_pos+mean_samp2_neg_test*n_test_samp_neg)/(n_test_samp_neg+n_test_samp_pos);
+       
+        mean_samp1_test = (mean_samp1_pos_test+mean_samp1_neg_test)/2;
+        mean_samp2_test = (mean_samp2_pos_test+mean_samp2_neg_test)/2;
+
         for j = 1:n1
             thres(j,:) = -w(j,:)*[mean_samp1_test(j); mean_samp2_test(j);];
             new_samp_pos_test(j,:) = w(j,:)*[samp1_pos_test(j,:); samp2_pos_test(j,:)]+repmat(thres(j,:),1,n_test_samp_pos);
@@ -75,11 +86,6 @@ function [ acc_train, acc_test,train_eval, test_eval ] = compute_acc_sep( samp1,
 %             new_samp_pos_test(j,:) = w(j,:)*[samp1_pos_test(j,:); samp2_pos_test(j,:)]+repmat(thres(j,:),1,n_test_samp_pos);
 %             new_samp_neg_test(j,:) = w(j,:)*[samp1_neg_test(j,:); samp2_neg_test(j,:)]+repmat(thres(j,:),1,n_test_samp_neg);
 %         end
-        
-%         samp_pos_mean_train = mean(samp_pos_train,2);
-%         samp_neg_mean_train = mean(samp_neg_train,2);
-        
-%         threshold = (samp_pos_mean_train+samp_neg_mean_train)/2;
             
         train_pos_labels = new_samp_pos_train<zeros(n1,n_train_samp_pos);
         train_neg_labels = new_samp_neg_train<zeros(n1,n_train_samp_neg);

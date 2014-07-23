@@ -9,19 +9,21 @@ n1 = size(samp1,1);
 
 n_pos = sum(ori_data(4,:)==0)/2;
 
-%generate random data
+% % generate random data
 % samp1 = randn(size(samp1));
 % samp2 = randn(size(samp1));
 
 k_neigh = 1
-proj_type = 1 % 1:fisher 2:pSVM 3:libSVM 4: tuned libSVM
+proj_type = 3 % 1:fisher 2:pSVM 3:libSVM 4: tuned libSVM
 dist_type = 1
 mean_type = 1 % 1:normal 2:weighted
 
 % t = 180;
 % samp1(1,:) = samp1(t,:);
 % samp2(1,:) = samp2(t,:);
+% figure(3);
 
+% first projection
 [ new_samp_pos, new_samp_neg ] = k_near_proj( samp1,samp2,k_neigh,proj_type,dist_type,mean_type,n_pos,1,[]);
 new_samp = [new_samp_pos new_samp_neg];
 if(proj_type ==1 )
@@ -31,6 +33,14 @@ elseif(proj_type==2)
 elseif(proj_type==3)
     save(sprintf('%d nn libsvm.txt',k_neigh),'new_samp','-ascii');
 end
+
+% %only cancer
+% new_samp_pos = samp2(:,1:n_pos);
+% new_samp_neg = samp2(:,n_pos+1:end);
+
+% %cancer minus normal
+% new_samp_pos = samp2(:,1:n_pos) - samp1(:,1:n_pos);
+% new_samp_neg = samp2(:,n_pos+1:end)-samp1(:,n_pos+1:end);
 
 [ ttest_pvalues ] = welch_t_test( new_samp_pos,new_samp_neg );
 [minpvalue min_i] = min(ttest_pvalues);
@@ -53,7 +63,7 @@ k = 1;
 % sorted_p_perm = [sorted_p sort_i];
 
 %permutation hotelling
-[ perm_hot_pvalues ] = hot_perm_samples( samp1,samp2,100,n_pos );
+% [ perm_hot_pvalues ] = hot_perm_samples( samp1,samp2,100,n_pos );
 % [perm_pvalues ] = hot_perm_samples( new_samp1,new_samp2,5000,1); 
 % [sorted_p, sort_i] = sort(perm_pvalues);
 % sorted_p_perm = [sorted_p sort_i];
@@ -68,24 +78,24 @@ acc = [acc_train acc_test avg_acc];
 %hotelling
 [ hot_pvalues ] = hotelling_t2_test_batch( samp1,samp2,n_pos );
 
-res_table_perm = [[1:n1]' perm_hot_pvalues hot_pvalues ttest_pvalues acc_sep train_eval test_eval acc];
+qvalues = plot_hot_ttest([hot_pvalues ttest_pvalues],ones(n1,1)-res_table_perm(:,6));
 
-qvalues = plot_hot_ttest(res_table_perm(:,3:4),ones(n1,1)-res_table_perm(:,6));
+res_table_perm = [[1:n1]' hot_pvalues ttest_pvalues qvalues acc_sep train_eval test_eval acc];
 
-%3 comb hotelling
-samp1_pos = samp1(:,1:n_pos);
-samp1_neg = samp1(:,n_pos+1:end);
-samp2_pos = samp2(:,1:n_pos);% - samp1_pos;
-samp2_neg = samp2(:,n_pos+1:end);% -samp1_neg;
-
-% [ hot_pvalues,enum ] = hotelling_t2_test_perm_genes( samp2_pos,samp2_neg,3);
-[ hot_pvalues,enum ] = hotelling_t2_test_perm_genes( new_samp_pos,new_samp_neg,3);
-hot_pvalues = [enum hot_pvalues];
-save('perm_hot_pvalue_fisher.txt','hot_pvalues','-ascii');
+% %3 comb hotelling
+% samp1_pos = samp1(:,1:n_pos);
+% samp1_neg = samp1(:,n_pos+1:end);
+% samp2_pos = samp2(:,1:n_pos);% - samp1_pos;
+% samp2_neg = samp2(:,n_pos+1:end);% -samp1_neg;
+% 
+% % [ hot_pvalues,enum ] = hotelling_t2_test_perm_genes( samp2_pos,samp2_neg,3);
+% [ hot_pvalues,enum ] = hotelling_t2_test_perm_genes( new_samp_pos,new_samp_neg,3);
+% hot_pvalues = [enum hot_pvalues];
+% save('perm_hot_pvalue_svm.txt','hot_pvalues','-ascii');
 
 
 % 
-% %only use cancer
+%only use cancer
 % samp2_pos = samp2(:,1:n_pos);
 % samp2_neg = samp2(:,n_pos+1:end);
 % [ pvalues ] = welch_t_test( samp2_pos,samp2_neg );
