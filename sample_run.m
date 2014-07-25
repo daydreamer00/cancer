@@ -1,13 +1,4 @@
-%load data
-ori_data = xlsread('miRNA_with_metastasis.xlsx');
-save('ori_data.mat','ori_data');
-load('ori_data.mat');
-samp1 = ori_data(5:end,ori_data(1,:)==1);
-samp2 = ori_data(5:end,ori_data(1,:)==2);
-
-n1 = size(samp1,1);
-
-n_pos = sum(ori_data(4,:)==0)/2;
+loadOriData
 
 % % generate random data
 % samp1 = randn(size(samp1));
@@ -25,12 +16,12 @@ mean_type = 1 % 1:normal 2:weighted
 % figure(3);
 
 % first projection
-[ new_samp_pos, new_samp_neg ] = k_near_proj( samp1,samp2,k_neigh,proj_type,dist_type,mean_type,n_pos,1,[59]);
+[ new_samp_pos, new_samp_neg ] = k_near_proj( samp1,samp2,k_neigh,proj_type,dist_type,mean_type,n_pos,1,[]);
 new_samp = [new_samp_pos new_samp_neg];
 if(proj_type ==1 )
     save(sprintf('%d nn fisher.txt',k_neigh),'new_samp','-ascii');
 elseif(proj_type==2)
-    save(sprintf('%d nn svm.txt',k_neigh),'new_samp','-ascii');
+    save(sprintf('%d nn psvm.txt',k_neigh),'new_samp','-ascii');
 elseif(proj_type==3)
     save(sprintf('%d nn libsvm.txt',k_neigh),'new_samp','-ascii');
 end
@@ -93,7 +84,6 @@ res_table_perm = [[1:n1]' hot_pvalues ttest_pvalues qvalues acc_sep train_eval t
 % [ hot_pvalues,enum ] = hotelling_t2_test_perm_genes( new_samp_pos,new_samp_neg,3);
 % hot_pvalues = [enum hot_pvalues];
 % save('perm_hot_pvalue_svm.txt','hot_pvalues','-ascii');
-
 
 % 
 %only use cancer
