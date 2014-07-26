@@ -10,6 +10,8 @@ function [  ] = get_smallest_pq(k)
         if(regexp(file_name,'\.txt\s*$'))
             p_data = load([dir_name file_name]);
             [m, n] = size(p_data);
+            p_data = [[1:m]' p_data];
+            n = n+1;
             sorted = sortrows(p_data,[n n-1]);
             sorted = sorted(1:k,:);
             save([dir_name 'smallest/' file_name],'sorted','-ascii');
