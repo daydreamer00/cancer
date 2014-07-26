@@ -1,7 +1,7 @@
 function [  ] = get_smallest_pq(k)
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
-    dir_name = 'data/pq/';
+    dir_name = 'data/pq1/';
     dir_files = dir(dir_name);
     n_files = size(dir_files,1);
     for i = 1:n_files
