@@ -1,7 +1,8 @@
 function [ output_args ] = plot_hist( k,nbin)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
-    dir_name = 'data/pq/smallest/';
+    nbin = 400;
+    dir_name = 'data3/pq/smallest/';
     dir_files = dir(dir_name);
     n_files = size(dir_files,1);
     i_fig = 1;

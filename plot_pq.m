@@ -1,7 +1,7 @@
 function [ output_args ] = plot_pq( k )
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
-    dir_name = 'data/pq2/smallest/';
+    dir_name = 'data2/pq/smallest/';
     dir_files = dir(dir_name);
     n_files = size(dir_files,1);
     i_fig = 1;
