@@ -14,7 +14,7 @@ function [ output_args ] = run_perm_genes_compute_acc( k_neigh_range,proj_type_r
                 xlsdata = [header;num2cell(res_table)];                
                 sheet_name = sprintf('%dnn %s',k_neigh,prj_str);
                 
-                xlswrite(file_name,xlsdata,sheet_name);
+                xlwrite(file_name,xlsdata,sheet_name);
             end
         end
     end
@@ -32,7 +32,7 @@ function [ output_args ] = run_perm_genes_compute_acc( k_neigh_range,proj_type_r
      header = [repmat({'gene id'},[n_perm 1]),{'acc train','acc test','avg acc'}];
      xlsdata = [header;num2cell(res_table)];
      sheet_name = sprintf('%s',prj_str);
-     xlswrite(file_name,xlsdata,sheet_name);
+     xlwrite(file_name,xlsdata,sheet_name);
     
     
     samp2_pos = samp2(:,1:n_pos) - samp1_pos;
@@ -44,7 +44,7 @@ function [ output_args ] = run_perm_genes_compute_acc( k_neigh_range,proj_type_r
     header = [repmat({'gene id'},[n_perm 1]),{'acc train','acc test','avg acc'}];
      xlsdata = [header;num2cell(res_table)];
      sheet_name = sprintf('%s',prj_str);
-     xlswrite(file_name,xlsdata,sheet_name);
+     xlwrite(file_name,xlsdata,sheet_name);
 
 end
 
