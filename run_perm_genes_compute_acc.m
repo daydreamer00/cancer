@@ -29,7 +29,7 @@ function [ output_args ] = run_perm_genes_compute_acc( k_neigh_range,proj_type_r
      [ res_table ] = compute_acc_perm_genes( samp2_pos,samp2_neg,n_perm,iter);
     
     prj_str = 'cancer_only';
-     header = [repmat({'gene id'},[n_perm 1]),{'acc train','acc test','avg acc'}];
+     header = [repmat({'gene id'},[1 n_perm]),{'acc train','acc test','avg acc'}];
      xlsdata = [header;num2cell(res_table)];
      sheet_name = sprintf('%s',prj_str);
      xlwrite(file_name,xlsdata,sheet_name);
