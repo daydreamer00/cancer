@@ -36,8 +36,39 @@ function [ output_args ] = run_compute_first_proj(k_neigh_range,proj_type_range,
                 
             end
         end
-    end  
+    end 
     
+    samp1_pos = samp1(:,1:n_pos);
+    samp1_neg = samp1(:,n_pos+1:end);
+    samp2_pos = samp2(:,1:n_pos);% - samp1_pos;
+    samp2_neg = samp2(:,n_pos+1:end);% -samp1_neg;
+    
+    [ ttest_pvalues ] = welch_t_test( samp2_pos,samp2_neg );
+    [ hot_pvalues ] = hotelling_t2_test_batch( samp1,samp2,n_pos );
+    qvalues = plot_hot_ttest([hot_pvalues ttest_pvalues],ones(n1,1));
+    res_table_perm = [[1:n1]' hot_pvalues ttest_pvalues qvalues ];
+    
+     file_name = 'first_prj.xls';
+     prj_str = 'cancer_only';
+     header = {'gene id','hot pvalue','ttest pvalue','hot qvalue','ttest qvalue'};
+     xlsdata = [header;num2cell(res_table_perm)];
+     sheet_name = sprintf('%s',prj_str);
+     xlswrite(file_name,xlsdata,sheet_name);
+    
+    samp2_pos = samp2(:,1:n_pos) - samp1_pos;
+    samp2_neg = samp2(:,n_pos+1:end) -samp1_neg;
+    
+    [ ttest_pvalues ] = welch_t_test( samp2_pos,samp2_neg );
+    [ hot_pvalues ] = hotelling_t2_test_batch( samp1,samp2,n_pos );
+    qvalues = plot_hot_ttest([hot_pvalues ttest_pvalues],ones(n1,1));
+    res_table_perm = [[1:n1]' hot_pvalues ttest_pvalues qvalues ];
+    
+     file_name = 'first_prj.xls';
+     prj_str = 'cancer_minus';
+     header = {'gene id','hot pvalue','ttest pvalue','hot qvalue','ttest qvalue'};
+     xlsdata = [header;num2cell(res_table_perm)];
+     sheet_name = sprintf('%s',prj_str);
+     xlswrite(file_name,xlsdata,sheet_name);
 
 end
 
