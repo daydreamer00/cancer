@@ -27,7 +27,7 @@ function [ res_table ] = compute_acc_perm_genes( samp_pos,samp_neg,k,iter)
      labels = [ones(m1,1);zeros(m2,1)];
      
      for i = 1:new_n
-         if (~mod(i,10000))
+         if (~mod(i,10))
              fprintf('iter %d\n',i);
          end
          pos_samp = [samp_pos(enum(i,:),:)];
