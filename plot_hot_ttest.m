@@ -8,7 +8,5 @@ function [ qvalues  ] = plot_hot_ttest(pvalues,acc)
         res = savePQ(pvalues(:,i),'tmp.txt',[1:n]');
 %         scatter3(res(:,2),res(:,3),acc,'.');
         qvalues(:,i) = res(:,end);
-    end        
-    
+    end
 end
-
