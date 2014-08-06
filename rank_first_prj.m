@@ -41,9 +41,3 @@ function [ output_args ] = rank_first_prj(  )
         end
     end
 end
-
-function [scaled] = scale_data(data)
-    maxv = max(data);
-    minv = min(data);
-    scaled = (data - minv)/(maxv-minv);
-end

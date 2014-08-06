@@ -1,6 +1,14 @@
 function [ output_args ] = run_perm_genes_compute_acc( k_neigh_range,proj_type_range,mean_type_range,n_perm,iter)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
+
+    javaaddpath('poi_library/poi-3.8-20120326.jar');
+    javaaddpath('poi_library/poi-ooxml-3.8-20120326.jar');
+    javaaddpath('poi_library/poi-ooxml-schemas-3.8-20120326.jar');
+    javaaddpath('poi_library/xmlbeans-2.3.0.jar');
+    javaaddpath('poi_library/dom4j-1.6.1.jar');
+    javaaddpath('poi_library/stax-api-1.0.1.jar');
+
     for k_neigh = k_neigh_range
         for proj_type = proj_type_range
             for mean_type = mean_type_range
